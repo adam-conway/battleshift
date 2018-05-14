@@ -10,6 +10,10 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require css/bootstrap.min.css
+ *= require font-awesome/css/font-awesome.min.css
+ *= require simple-line-icons/css/simple-line-icons.css
+ *= require landing-page.css
  *= require_tree .
  *= require_self
  */
