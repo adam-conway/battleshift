@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      @user.update(api_key: ApiKey.generator)
       session[:user_id] = @user.id
       flash[:success] = "Created a new account"
       UserMailer.with(user: @user).registration_email.deliver_now

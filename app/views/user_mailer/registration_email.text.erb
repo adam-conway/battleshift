@@ -1,1 +1,2 @@
-<p><%= link_to 'Visit here to activate your account.', authenticate_url(user: @user) %></p>
+<%= link_to 'Visit here to activate your account.', authenticate_url(user: @user) %>
+Your API key: <%= @user.api_key %>
