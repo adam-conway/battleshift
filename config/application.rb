@@ -35,10 +35,10 @@ module BattleshipWeb
 
     # Don't generate system test files.
     config.generators.system_tests = nil
-    config.action_mailer.default_url_options = { host: '127.0.0.1:3000' }
+    config.action_mailer.default_url_options = { host: ENV['BASE_URL'] }
 
     config.action_mailer.delivery_method = :smtp
-
+    
     config.action_mailer.smtp_settings = {
       address:              'smtp.sendgrid.net',
       port:                 '587',
