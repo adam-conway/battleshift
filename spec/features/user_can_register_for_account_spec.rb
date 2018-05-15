@@ -4,6 +4,7 @@ describe 'User' do
   describe 'User visits home page' do
     scenario 'should be able to register for an account' do
       visit '/'
+
       click_on 'Register'
 
       expect(current_path).to eq('/register')
@@ -23,6 +24,7 @@ describe 'User' do
 
     scenario 'should not be able to register for an account with wrong password' do
       visit '/'
+
       click_on 'Register'
 
       expect(current_path).to eq('/register')

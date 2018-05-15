@@ -15,4 +15,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index'
 
   get '/authenticate', to: 'registration#update'
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  get '/logout', to: 'sessions#destroy'
 end
