@@ -8,7 +8,8 @@ class TurnProcessor
   def run!
     begin
       attack_opponent
-      ai_attack_back
+      
+      # ai_attack_back
       game.save!
     rescue InvalidAttack => e
       @messages << e.message
