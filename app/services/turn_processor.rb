@@ -8,7 +8,7 @@ class TurnProcessor
   def run!
     begin
       attack_opponent
-      
+
       # ai_attack_back
       game.save!
     rescue InvalidAttack => e
@@ -28,6 +28,11 @@ class TurnProcessor
     result = Shooter.fire!(board: opponent.board, target: target)
     @messages << "Your shot resulted in a #{result}."
     game.player_1_turns += 1
+    if game.current_turn == 'challenger'
+      game.current_turn = 'opponent'
+    else
+      game.current_turn = 'challenger'
+    end
   end
 
   def ai_attack_back
@@ -37,11 +42,19 @@ class TurnProcessor
   end
 
   def player
-    Player.new(game.player_1_board)
+    if game.current_turn == 1
+      Player.new(game.player_2_board)
+    else
+      Player.new(game.player_1_board)
+    end
   end
 
   def opponent
-    Player.new(game.player_2_board)
+    if game.current_turn == 'challenger'
+      Player.new(game.player_2_board)
+    else
+      Player.new(game.player_1_board)
+    end
   end
 
 end

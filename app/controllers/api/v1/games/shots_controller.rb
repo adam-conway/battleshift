@@ -7,7 +7,6 @@ module Api
 
           turn_processor = TurnProcessor.new(game, params[:shot][:target])
 
-          binding.pry
           turn_processor.run!
           render json: game, message: turn_processor.message
         end
