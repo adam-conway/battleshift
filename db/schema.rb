@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180515163509) do
+ActiveRecord::Schema.define(version: 20180515175605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20180515163509) do
     t.integer "winner"
     t.integer "player_1_turns"
     t.integer "player_2_turns"
-    t.integer "current_turn"
+    t.integer "current_turn", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "player_1_api_key"
