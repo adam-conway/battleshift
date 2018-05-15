@@ -6,8 +6,7 @@ module Api
           game = Game.find(params[:game_id])
 
           turn_processor = TurnProcessor.new(game, params[:shot][:target])
-
-          if turn_processor.check_for_cheater(request.headers["X-API-key"])
+          if turn_processor.check_for_cheater(request.headers["X-API-key"]) && !request.headers["X-API-key"].nil?
             render json: game, message: "Invalid move. It's your opponent's turn", status: 400
           else
             turn_processor.run!
