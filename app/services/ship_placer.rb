@@ -1,5 +1,5 @@
 class ShipPlacer
-  def initialize(board:, ship:, start_space:, end_space:)
+  def initialize(board, ship, start_space, end_space)
     @board       = board
     @ship        = ship
     @start_space = start_space
@@ -34,6 +34,7 @@ class ShipPlacer
     msg = "Ship size must be equal to the number of spaces you are trying to fill."
     raise InvalidShipPlacement unless range.count == ship.length
     range.each { |column| place_ship(row, column) }
+    "Successfully placed ship with a size of #{ship.length}."
   end
 
   def place_in_column
@@ -41,6 +42,7 @@ class ShipPlacer
     range   = start_space[0]..end_space[0]
     raise InvalidShipPlacement unless range.count == ship.length
     range.each { |row| place_ship(row, column) }
+    "Successfully placed ship with a size of #{ship.length}."
   end
 
   def place_ship(row, column)
