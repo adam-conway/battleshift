@@ -20,6 +20,10 @@ class TurnProcessor
     @messages.join(" ")
   end
 
+  def check_for_cheater(api_key)
+    (game.current_turn == "challenger" && api_key == game.player_2_api_key) || (game.current_turn == "opponent" && api_key == game.player_1_api_key)
+  end
+
   private
 
   attr_reader :game, :target
