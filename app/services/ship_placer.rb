@@ -34,7 +34,12 @@ class ShipPlacer
     msg = "Ship size must be equal to the number of spaces you are trying to fill."
     raise InvalidShipPlacement unless range.count == ship.length
     range.each { |column| place_ship(row, column) }
-    "Successfully placed ship with a size of #{ship.length}."
+    @board.fleet.delete(ship.length)
+    if @board.fleet.length >= 1
+      "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place with a size of #{board.fleet.last}."
+    else
+      "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place."
+    end
   end
 
   def place_in_column
@@ -42,7 +47,12 @@ class ShipPlacer
     range   = start_space[0]..end_space[0]
     raise InvalidShipPlacement unless range.count == ship.length
     range.each { |row| place_ship(row, column) }
-    "Successfully placed ship with a size of #{ship.length}."
+    @board.fleet.delete(ship.length)
+    if @board.fleet.length >= 1
+      "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place with a size of #{board.fleet.last}."
+    else
+      "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place."
+    end
   end
 
   def place_ship(row, column)
