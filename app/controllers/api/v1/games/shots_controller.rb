@@ -12,7 +12,8 @@ module Api
             render json: game, message: "Invalid coordinates.", status: 400
           else
             turn_processor.run!
-            render json: game, message: turn_processor.message
+            binding.pry
+            render json: game, message: turn_processor.message, winner: game.winner
           end
         end
       end

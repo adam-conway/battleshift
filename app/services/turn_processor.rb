@@ -43,7 +43,13 @@ class TurnProcessor
     end.uniq
     if ships.all? {|ship| ship.is_sunk?}
       result += " Game over"
-      game.update(winner: game.current_turn)
+      key = if game.current_turn == "challenger"
+        game.player_1_api_key
+      else
+        game.player_2_api_key
+      end
+      # binding.pry
+      game.update(winner: User.find_by(api_key: key).email)
     end
     @messages << "Your shot resulted in a #{result}."
     game.player_1_turns += 1
