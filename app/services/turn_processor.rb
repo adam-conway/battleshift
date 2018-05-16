@@ -24,6 +24,14 @@ class TurnProcessor
     (game.current_turn == "challenger" && api_key == game.player_2_api_key) || (game.current_turn == "opponent" && api_key == game.player_1_api_key)
   end
 
+  def check_for_valid_coordinates(coordinates)
+    possible_spaces = opponent.board.board.flatten.map do |space|
+      space.keys
+    end.flatten
+
+    !possible_spaces.include?(coordinates)
+  end
+
   private
 
   attr_reader :game, :target
