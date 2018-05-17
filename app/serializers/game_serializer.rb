@@ -1,6 +1,6 @@
 class GameSerializer < ActiveModel::Serializer
   attributes :id,
-  #            :message,
+             :message,
              :current_turn,
              :player_1_board,
              :player_2_board
@@ -14,7 +14,7 @@ class GameSerializer < ActiveModel::Serializer
     BoardSerializer.new(object.player_2_board).attributes
   end
   #
-  # def message
-  #   @instance_options[:message]
-  # end
+  def message
+    @instance_options[:message]
+  end
 end

@@ -48,7 +48,7 @@ class ShipPlacer
 
   def place_in_column
     spaces = find_column_spaces
-    raise InvalidShipPlacement unless range.count == ship.length
+    raise InvalidShipPlacement unless spaces.count == ship.length
     place_ship(spaces)
     # range.each { |row| place_ship(row, column) }
     # @board.fleet.delete(ship.length)
@@ -86,7 +86,7 @@ class ShipPlacer
     if @board.ships.uniq.count == 1
       @message = "Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2."
     else
-      @message = "Successfully placed ship with a size of 2. You have 1 ship(s) to place."
+      @message = "Successfully placed ship with a size of 2. You have 0 ship(s) to place."
     end
   end
 end
