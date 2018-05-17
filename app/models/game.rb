@@ -13,5 +13,5 @@ class Game < ApplicationRecord
   belongs_to :player_2, class_name: "User"
   belongs_to :player_1_board, class_name: "Board"
   belongs_to :player_2_board, class_name: "Board"
-  belongs_to :winner, class_name: "User"
+  belongs_to :winner, class_name: "User", optional: true
 end

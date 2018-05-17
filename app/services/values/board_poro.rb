@@ -28,7 +28,7 @@ class BoardPoro
 
   def create_spaces
     space_names.map do |name|
-      [name, Space.new(name)]
+      [name, SpacePoro.new(name)]
     end.to_h
   end
 

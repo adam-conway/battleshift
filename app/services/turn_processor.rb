@@ -39,7 +39,7 @@ class TurnProcessor
   def attack_opponent
     result = Shooter.fire!(board: opponent.board, target: target)
     ships = opponent.board.board.flatten.map(&:values).flatten.map(&:contents).find_all do |contents|
-      contents.class == Ship
+      contents.class == ShipPoro
     end.uniq
     if ships.all? {|ship| ship.is_sunk?}
       result += " Game over"
