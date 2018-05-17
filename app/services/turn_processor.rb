@@ -38,6 +38,18 @@ class TurnProcessor
 
   def attack_opponent
     result = Shooter.fire!(board: opponent.board, target: target)
+    ships = opponent.board.board.flatten.map(&:values).flatten.map(&:contents).find_all do |contents|
+      contents.class == Ship
+    end.uniq
+    if ships.all? {|ship| ship.is_sunk?}
+      result += " Game over"
+      key = if game.current_turn == "challenger"
+        game.player_1_api_key
+      else
+        game.player_2_api_key
+      end
+      game.update(winner: User.find_by(api_key: key).email)
+    end
     @messages << "Your shot resulted in a #{result}."
     game.player_1_turns += 1
     if game.current_turn == 'challenger'
