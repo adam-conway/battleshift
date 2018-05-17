@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180516230535) do
+ActiveRecord::Schema.define(version: 20180517184440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,14 +18,17 @@ ActiveRecord::Schema.define(version: 20180516230535) do
   create_table "games", force: :cascade do |t|
     t.text "player_1_board"
     t.text "player_2_board"
-    t.text "winner"
     t.integer "player_1_turns", default: 0
     t.integer "player_2_turns", default: 0
     t.integer "current_turn", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "player_1_api_key"
-    t.string "player_2_api_key"
+    t.bigint "player_1_id"
+    t.bigint "player_2_id"
+    t.bigint "winner_id"
+    t.index ["player_1_id"], name: "index_games_on_player_1_id"
+    t.index ["player_2_id"], name: "index_games_on_player_2_id"
+    t.index ["winner_id"], name: "index_games_on_winner_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,4 +41,7 @@ ActiveRecord::Schema.define(version: 20180516230535) do
     t.string "password_digest"
   end
 
+  add_foreign_key "games", "users", column: "player_1_id"
+  add_foreign_key "games", "users", column: "player_2_id"
+  add_foreign_key "games", "users", column: "winner_id"
 end

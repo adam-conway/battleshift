@@ -6,6 +6,7 @@ class Board
   def initialize(length)
     @length = length
     @board = create_grid
+    binding.pry
     @fleet = [2, 3]
   end
 
