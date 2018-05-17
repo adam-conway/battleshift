@@ -1,4 +1,4 @@
-class Space
+class SpacePoro
   attr_reader :coordinates, :status, :contents
 
   def initialize(coordinates)

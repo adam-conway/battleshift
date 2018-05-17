@@ -1,4 +1,4 @@
-class Ship
+class ShipPoro
   attr_reader :length, :damage, :start_space,
               :end_space
 

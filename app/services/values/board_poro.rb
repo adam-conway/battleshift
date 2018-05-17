@@ -1,4 +1,4 @@
-class Board
+class BoardPoro
   attr_reader    :length,
                  :board
   attr_accessor  :fleet
