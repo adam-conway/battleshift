@@ -3,7 +3,7 @@ class SpaceSerializer < ActiveModel::Serializer
   attributes :coordinates, :status
 
   def coordinates
-    object.coordinates
+    object.name
   end
 
   def status

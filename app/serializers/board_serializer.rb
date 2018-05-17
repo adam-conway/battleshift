@@ -3,8 +3,12 @@ class BoardSerializer < ActiveModel::Serializer
   attributes :rows
 
   def rows
-    object.board.map do |row|
-      RowSerializer.new(row).attributes
+    rows = object.spaces.order(:id).pluck(:name).map do |space|
+      space.delete(space[1])
+    end.uniq
+
+    rows.map do |row|
+      RowSerializer.new(object.spaces.where("name LIKE ?", "#{row}%")).attributes
     end
   end
 end
