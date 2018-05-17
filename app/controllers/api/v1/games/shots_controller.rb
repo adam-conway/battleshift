@@ -5,6 +5,10 @@ module Api
         def create
           game = Game.find(params[:game_id])
 
+          if game.winner
+            render json: game, winner: game.winner, message: "Invalid move. Game over.", status: 400 and return
+          end
+
           turn_processor = TurnProcessor.new(game, params[:shot][:target])
           if turn_processor.check_for_cheater(request.headers["X-API-key"]) && !request.headers["X-API-key"].nil?
             render json: game, message: "Invalid move. It's your opponent's turn", status: 400
@@ -12,8 +16,7 @@ module Api
             render json: game, message: "Invalid coordinates.", status: 400
           else
             turn_processor.run!
-            binding.pry
-            render json: game, message: turn_processor.message, winner: game.winner
+            render json: game, winner: game.winner, message: turn_processor.message
           end
         end
       end

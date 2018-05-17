@@ -48,7 +48,6 @@ class TurnProcessor
       else
         game.player_2_api_key
       end
-      # binding.pry
       game.update(winner: User.find_by(api_key: key).email)
     end
     @messages << "Your shot resulted in a #{result}."
