@@ -35,7 +35,7 @@ class TurnProcessor
 
   private
 
-  attr_reader :game, :target, :shooter
+  attr_reader :game, :target, :shooter, :target_board
 
   def attack_opponent
     shot_attempt = Shooter.new(board: @target_board, target: target)
@@ -53,10 +53,18 @@ class TurnProcessor
     #   game.update(winner: User.find_by(api_key: key).email)
     # end
     @messages << "Your shot resulted in a #{shot_attempt.message}."
+    check_end_of_game
     if game.current_turn == 'challenger'
       game.update(current_turn: 'opponent')
     else
       game.update(current_turn: 'challenger')
+    end
+  end
+
+  def check_end_of_game
+    if target_board.ships.sum(:length) == target_board.ships.sum(:damage)
+      @messages[0] += " Game over."
+      game.update(winner: shooter)
     end
   end
 

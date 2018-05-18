@@ -40,7 +40,7 @@ class Shooter
 
     def check_for_sunk_ship
       if target_space.ship.damage == target_space.ship.length
-        @message += ". Battleship sunk."
+        @message += ". Battleship sunk"
       end
     end
 
