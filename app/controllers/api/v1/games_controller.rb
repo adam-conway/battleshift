@@ -9,14 +9,14 @@ module Api
       def create
         challenger = User.find_by(api_key: request.headers["X-API-Key"])
         opponent = User.find_by(email: params["opponent_email"])
+        challenger_board = BoardGenerator.new(4).generate
+        opponent_board = BoardGenerator.new(4).generate
 
-        challenger_board = Board.new(4)
-        opponent_board = Board.new(4)
         game = Game.create(
+          player_1: challenger,
           player_1_board: challenger_board,
-          player_2_board: opponent_board,
-          player_1_api_key: challenger.api_key,
-          player_2_api_key: opponent.api_key
+          player_2: opponent,
+          player_2_board: opponent_board
         )
 
         render json: game

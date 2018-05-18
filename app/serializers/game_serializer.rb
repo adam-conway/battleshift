@@ -1,6 +1,10 @@
 class GameSerializer < ActiveModel::Serializer
-  attributes :id, :message, :current_turn,
-             :player_1_board, :player_2_board, :winner
+  attributes :id,
+             :message,
+             :current_turn,
+             :player_1_board,
+             :player_2_board,
+             :winner
 
   def player_1_board
     BoardSerializer.new(object.player_1_board).attributes
@@ -12,5 +16,9 @@ class GameSerializer < ActiveModel::Serializer
 
   def message
     @instance_options[:message]
+  end
+
+  def winner
+    object.winner.email unless object.winner.nil?
   end
 end
