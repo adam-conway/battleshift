@@ -14,6 +14,12 @@ module Api
           # end
 
           turn_processor = TurnProcessor.new(game, params[:shot][:target], current_requester)
+
+
+          if turn_processor.check_invalid_turn
+            render json: game, message: turn_processor.message, status: 400 and return
+          end
+
           turn_processor.run!
 
           render json: game, winner: game.winner, message: turn_processor.message

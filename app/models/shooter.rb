@@ -30,6 +30,9 @@ class Shooter
         target_space.update(status: "Hit")
         target_space.ship.increment!(:damage)
         @message = "Hit"
+      else
+        target_space.update(status: "Miss")
+        @message = "Miss"
       end
       # @status = if contents && not_attacked?
       #             contents.attack!
