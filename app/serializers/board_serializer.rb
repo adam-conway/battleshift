@@ -8,7 +8,7 @@ class BoardSerializer < ActiveModel::Serializer
     end.uniq
 
     rows.map do |row|
-      RowSerializer.new(object.spaces.where("name LIKE ?", "#{row}%")).attributes
+      RowSerializer.new(object.spaces.order(:id).where("name LIKE ?", "#{row}%")).attributes
     end
   end
 end

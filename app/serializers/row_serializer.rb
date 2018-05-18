@@ -8,7 +8,7 @@ class RowSerializer < ActiveModel::Serializer
   end
 
   def data
-    object.reverse.map do |space|
+    object.map do |space|
       SpaceSerializer.new(space).attributes
     end
   end
