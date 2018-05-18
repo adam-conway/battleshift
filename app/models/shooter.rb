@@ -34,16 +34,14 @@ class Shooter
         target_space.update(status: "Miss")
         @message = "Miss"
       end
-      # @status = if contents && not_attacked?
-      #             contents.attack!
-      #             if contents.is_sunk?
-      #               "Hit. Battleship sunk."
-      #             else
-      #               "Hit"
-      #             end
-      #           else
-      #             "Miss"
-      #           end
+
+      check_for_sunk_ship unless target_space.ship_id.nil?
+    end
+
+    def check_for_sunk_ship
+      if target_space.ship.damage == target_space.ship.length
+        @message += ". Battleship sunk."
+      end
     end
 
     def valid_shot?
