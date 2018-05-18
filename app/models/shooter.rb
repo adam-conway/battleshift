@@ -14,16 +14,8 @@ class Shooter
     end
   end
 
-  # def self.fire!(board:, target:)
-  #   new(board: board, target: target).fire!
-  # end
-
   private
     attr_reader :board, :target_space
-
-    # def space
-    #   @space ||= board.locate_space(target)
-    # end
 
     def fire_on_space(target_space)
       if !target_space.ship_id.nil? && target_space.status == "Not Attacked"

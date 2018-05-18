@@ -1,4 +1,5 @@
 class TurnProcessor
+  attr_reader :status
   def initialize(game, target, shooter)
     @game         = game
     @target       = target
@@ -10,8 +11,6 @@ class TurnProcessor
   def run!
     begin
       attack_opponent
-      # ai_attack_back
-      # game.save!
     rescue InvalidAttack => e
       @messages << e.message
     end
@@ -21,12 +20,23 @@ class TurnProcessor
     @messages.join(" ")
   end
 
+  def check_api_key
+    if shooter.nil?
+      @messages << "Unauthorized"
+    elsif shooter.api_key != game.player_1.api_key && shooter.api_key != game.player_2.api_key
+      @messages << "Unauthorized"
+    else
+      false
+    end
+  end
 
   def check_invalid_turn
     if check_for_cheater
       @messages << "Invalid move. It's your opponent's turn"
     elsif check_for_invalid_coordinates
       @messages << "Invalid coordinates"
+    elsif check_for_game_over
+      @messages << "Invalid move. Game over."
     else
       false
     end
@@ -40,18 +50,6 @@ class TurnProcessor
   def attack_opponent
     shot_attempt = Shooter.new(board: @target_board, target: target)
     shot_attempt.fire!
-    # ships = opponent.board.board.flatten.map(&:values).flatten.map(&:contents).find_all do |contents|
-    #   contents.class == ShipPoro
-    # end.uniq
-    # if ships.all? {|ship| ship.is_sunk?}
-    #   result += " Game over"
-    #   key = if game.current_turn == "challenger"
-    #     game.player_1_api_key
-    #   else
-    #     game.player_2_api_key
-    #   end
-    #   game.update(winner: User.find_by(api_key: key).email)
-    # end
     @messages << "Your shot resulted in a #{shot_attempt.message}."
     check_end_of_game
     if game.current_turn == 'challenger'
@@ -70,16 +68,16 @@ class TurnProcessor
 
   def check_for_invalid_coordinates
     @target_board.spaces.pluck(:name).exclude?(target)
-    # possible_spaces = opponent.board.board.flatten.map do |space|
-    #   space.keys
-    # end.flatten
-    #
-    # !possible_spaces.include?(coordinates)
+  end
+
+  def check_for_game_over
+    !game.winner.nil?
   end
 
   def check_for_cheater
     (game.current_turn == "challenger" && shooter.api_key == game.player_2.api_key) || (game.current_turn == "opponent" && shooter.api_key == game.player_1.api_key)
   end
+
   def ai_attack_back
     result = AiSpaceSelector.new(player.board).fire!
     @messages << "The computer's shot resulted in a #{result}."
@@ -93,21 +91,4 @@ class TurnProcessor
       game.player_1_board
     end
   end
-
-  # def player
-  #   if game.current_turn == 1
-  #     Player.new(game.player_2_board)
-  #   else
-  #     Player.new(game.player_1_board)
-  #   end
-  # end
-  #
-  # def opponent
-  #   if game.current_turn == 'challenger'
-  #     Player.new(game.player_2_board)
-  #   else
-  #     Player.new(game.player_1_board)
-  #   end
-  # end
-
 end

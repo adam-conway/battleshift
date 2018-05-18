@@ -1,38 +1,23 @@
-player_1_board = Board.new(4)
-player_2_board = Board.new(4)
+User.destroy_all
+Space.destroy_all
+Ship.destroy_all
+Board.destroy_all
+Game.destroy_all
 
-sm_ship = Ship.new(2)
-md_ship = Ship.new(3)
+user1 = User.create!(name: "Adam", email: "adam.n.conway@gmail.com", api_key: "123456789a", password: "help")
+user2 = User.create!(name: "Jimmy", email: "nelson.jimmy@gmail.com", api_key: "987654321a", password: "help")
 
-# Place Player 1 ships
-ShipPlacer.new(board: player_1_board,
-               ship: sm_ship,
-               start_space: "A1",
-               end_space: "A2").run
-
-ShipPlacer.new(board: player_1_board,
-               ship: md_ship,
-               start_space: "B1",
-               end_space: "D1").run
-
-# Place Player 2 ships
-ShipPlacer.new(board: player_2_board,
-               ship: sm_ship.dup,
-               start_space: "A1",
-               end_space: "A2").run
-
-ShipPlacer.new(board: player_2_board,
-               ship: md_ship.dup,
-               start_space: "B1",
-               end_space: "D1").run
+user_1_board = BoardGenerator.new(4).generate
+user_2_board = BoardGenerator.new(4).generate
 
 game_attributes = {
-  player_1_board: player_1_board,
-  player_2_board: player_2_board,
+  player_1_board: user_1_board,
+  player_2_board: user_2_board,
+  player_1: user1,
+  player_2: user2,
   player_1_turns: 0,
   player_2_turns: 0,
   current_turn: "challenger"
 }
 
-game = Game.new(game_attributes)
-game.save!
+Game.create!(game_attributes)

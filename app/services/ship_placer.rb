@@ -36,29 +36,12 @@ class ShipPlacer
     spaces = find_row_spaces
     raise InvalidShipPlacement unless spaces.count == ship.length
     place_ship(spaces)
-    # spaces.each do |space|
-    #   space.update(ship: ship)
-    # end
-    # if @board.ships.uniq.count == 1
-    #   "Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2."
-    # else
-    #   "Successfully placed ship with a size of 2. You have 1 ship(s) to place."
-    # end
   end
 
   def place_in_column
     spaces = find_column_spaces
     raise InvalidShipPlacement unless spaces.count == ship.length
     place_ship(spaces)
-    # range.each { |row| place_ship(row, column) }
-    # @board.fleet.delete(ship.length)
-    # if @board.fleet.length >= 1
-    #   "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place with a size of #{board.fleet.last}."
-    # else
-    #   "Successfully placed ship with a size of #{ship.length}. You have #{board.fleet.count} ship(s) to place."
-    # end
-
-    # spaces = @board.spaces.where("name LIKE ?", "%#{start_space[1]}").order(name: :asc).where("name > '#{start_space[0]}'").limit(2)
   end
 
   def find_correct_board
