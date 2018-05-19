@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :space do
+    name "Set yourself"
     status "Not attacked"
-    board board
-    ship ship
+    board
+    ship nil
   end
 end
