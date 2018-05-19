@@ -37,7 +37,8 @@ describe ShipPlacer do
     end
 
     it "places the ship within a column with empty spaces" do
-      ship = create(:ship, length: 3)
+      ship1 = create(:ship, length: 3)
+      ship2 = create(:ship, length: 3)
 
       a1 = @player_1_board.spaces.find_by(name: "A1")
       a2 = @player_1_board.spaces.find_by(name: "A2")
@@ -51,44 +52,44 @@ describe ShipPlacer do
       expect(b1.ship).to be_nil
       expect(c1.ship).to be_nil
 
-      ShipPlacer.new(game: @game, ship: ship, start_space: "A1", end_space: "C1", api_key: @player_1.api_key).run
+      ShipPlacer.new(game: @game, ship: ship1, start_space: "A1", end_space: "C1", api_key: @player_1.api_key).run
 
-      expect(@player_1_board.spaces.find_by(name: "A1").ship).to eq(ship)
+      expect(@player_1_board.spaces.find_by(name: "A1").ship).to eq(ship1)
       expect(@player_1_board.spaces.find_by(name: "A2").ship).to be_nil
       expect(@player_1_board.spaces.find_by(name: "A3").ship).to be_nil
-      expect(@player_1_board.spaces.find_by(name: "B1").ship).to eq(ship)
-      expect(@player_1_board.spaces.find_by(name: "C1").ship).to eq(ship)
+      expect(@player_1_board.spaces.find_by(name: "B1").ship).to eq(ship1)
+      expect(@player_1_board.spaces.find_by(name: "C1").ship).to eq(ship1)
     end
 
-    xit "doesn't place the ship if it isn't within the same row or column" do
+    it "doesn't place the ship if it isn't within the same row or column" do
       expect {
-        ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "B2").run
+        ShipPlacer.new(game: @game, ship: create(:ship), start_space: "A1", end_space: "B2", api_key: @player_1.api_key).run
       }.to raise_error(InvalidShipPlacement)
     end
 
-    xit "doesn't place the ship if the space is occupied when placing in columns" do
-      ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "B1").run
+    it "doesn't place the ship if the space is occupied when placing in columns" do
+      ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "A2", api_key: @player_1.api_key).run
       expect {
-        ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "B1").run
+        ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "A2", api_key: @player_1.api_key).run
       }.to raise_error(InvalidShipPlacement)
     end
 
-    xit "doesn't place the ship if the space is occupied when placing in rows" do
-      ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "A2").run
+    it "doesn't place the ship if the space is occupied when placing in rows" do
+      ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "B1", api_key: @player_2.api_key).run
       expect {
-        ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "A2").run
+        ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "B1", api_key: @player_2.api_key).run
       }.to raise_error(InvalidShipPlacement)
     end
 
-    xit "doesn't place the ship if the ship is smaller than the supplied range in a row" do
+    it "doesn't place the ship if the ship is smaller than the supplied range in a row" do
       expect {
-        ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "A3").run
+        ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "A4", api_key: @player_1.api_key).run
       }.to raise_error(InvalidShipPlacement)
     end
 
-    xit "doesn't place the ship if the ship is smaller than the supplied range in a column" do
+    it "doesn't place the ship if the ship is smaller than the supplied range in a column" do
       expect {
-        ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "C1").run
+      ShipPlacer.new(game: @game, ship: create(:ship, length: 2), start_space: "A1", end_space: "D1", api_key: @player_1.api_key).run
       }.to raise_error(InvalidShipPlacement)
     end
   end
