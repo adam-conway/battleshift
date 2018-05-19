@@ -36,24 +36,28 @@ describe ShipPlacer do
       expect(@player_1_board.spaces.find_by(name: "B1").ship).to be_nil
     end
 
-    xit "places the ship within a column with empty spaces" do
-      a1 = board.locate_space("A1")
-      b1 = board.locate_space("B1")
+    it "places the ship within a column with empty spaces" do
+      ship = create(:ship, length: 3)
 
-      neighbor_1 = board.locate_space("A2")
-      neighbor_2 = board.locate_space("B2")
+      a1 = @player_1_board.spaces.find_by(name: "A1")
+      a2 = @player_1_board.spaces.find_by(name: "A2")
+      a3 = @player_1_board.spaces.find_by(name: "A3")
+      b1= @player_1_board.spaces.find_by(name: "B1")
+      c1= @player_1_board.spaces.find_by(name: "C1")
 
-      expect(a1.contents).to be_nil
-      expect(b1.contents).to be_nil
-      expect(neighbor_1.contents).to be_nil
-      expect(neighbor_2.contents).to be_nil
+      expect(a1.ship).to be_nil
+      expect(a2.ship).to be_nil
+      expect(a3.ship).to be_nil
+      expect(b1.ship).to be_nil
+      expect(c1.ship).to be_nil
 
-      ShipPlacer.new(board: board, ship: ship, start_space: "A1", end_space: "B1").run
+      ShipPlacer.new(game: @game, ship: ship, start_space: "A1", end_space: "C1", api_key: @player_1.api_key).run
 
-      expect(a1.contents).to eq(ship)
-      expect(b1.contents).to eq(ship)
-      expect(neighbor_1.contents).to be_nil
-      expect(neighbor_2.contents).to be_nil
+      expect(@player_1_board.spaces.find_by(name: "A1").ship).to eq(ship)
+      expect(@player_1_board.spaces.find_by(name: "A2").ship).to be_nil
+      expect(@player_1_board.spaces.find_by(name: "A3").ship).to be_nil
+      expect(@player_1_board.spaces.find_by(name: "B1").ship).to eq(ship)
+      expect(@player_1_board.spaces.find_by(name: "C1").ship).to eq(ship)
     end
 
     xit "doesn't place the ship if it isn't within the same row or column" do

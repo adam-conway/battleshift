@@ -59,7 +59,7 @@ class ShipPlacer
   end
 
   def find_column_spaces
-    @board.spaces.where("name LIKE ?", "%#{start_space[1]}").order(name: :asc).where("name > '#{start_space[0]}'").limit(2)
+    @board.spaces.where("name LIKE ?", "%#{start_space[1]}").order(name: :asc).where("name > '#{start_space[0]}'").limit(ship.length)
   end
 
   def place_ship(spaces)
