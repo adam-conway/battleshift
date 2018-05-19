@@ -37,7 +37,7 @@ class Shooter
     end
 
     def valid_shot?
-      board.spaces.pluck(:name).include?(target_space.name)
+      board.spaces.pluck(:name).include?(target_space.name) unless target_space.nil?
     end
 end
 
