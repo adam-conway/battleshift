@@ -1,5 +1,5 @@
 class BoardGenerator
-  def initialize(length)
+  def initialize(length = 4)
     @length = length
     @fleet = [2,3]
     @board = Board.create

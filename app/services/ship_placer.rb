@@ -34,12 +34,14 @@ class ShipPlacer
 
   def place_in_row
     spaces = find_row_spaces
+    raise InvalidShipPlacement unless spaces.pluck(:ship_id).all? {|ship| ship.nil?}
     raise InvalidShipPlacement unless spaces.count == ship.length
     place_ship(spaces)
   end
 
   def place_in_column
     spaces = find_column_spaces
+    raise InvalidShipPlacement unless spaces.pluck(:ship_id).all? {|ship| ship.nil?}
     raise InvalidShipPlacement unless spaces.count == ship.length
     place_ship(spaces)
   end
@@ -59,7 +61,7 @@ class ShipPlacer
   end
 
   def find_column_spaces
-    @board.spaces.where("name LIKE ?", "%#{start_space[1]}").order(name: :asc).where("name > '#{start_space[0]}'").limit(2)
+    @board.spaces.where("name LIKE ?", "%#{start_space[1]}").order(name: :asc).where("name > '#{start_space[0]}'").where("name < '#{end_space[0].next}'")
   end
 
   def place_ship(spaces)
