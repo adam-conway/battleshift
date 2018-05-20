@@ -46,6 +46,28 @@ describe "testing turn_processor" do
 
     expect(turn_processor.message).to eq("Unauthorized")
   end
+
+  it "User tries to shoot out of turn" do
+    turn_processor = TurnProcessor.new(@game, "A1", @player_2)
+    turn_processor.check_invalid_turn
+
+    expect(turn_processor.message).to eq("Invalid move. It's your opponent's turn")
+  end
+
+  it "User tries to shoot at invalid coordinates" do
+    turn_processor = TurnProcessor.new(@game, "Z1", @player_1)
+    turn_processor.check_invalid_turn
+
+    expect(turn_processor.message).to eq("Invalid coordinates")
+  end
+
+  it "User tries to shoot after game is over" do
+    @game.update(winner: @player_1)
+    turn_processor = TurnProcessor.new(@game, "A1", @player_1)
+    turn_processor.check_invalid_turn
+
+    expect(turn_processor.message).to eq("Invalid move. Game over.")
+  end
   #
   # it "Shoots and hits" do
   #   ship = create(:ship, length: 3)
