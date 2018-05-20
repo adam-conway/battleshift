@@ -40,7 +40,7 @@ describe 'User' do
     user = User.create(
       name: 'Jimmy',
       email: 'nelson.jimmy@gmail.com',
-      password: 'testpass'
+      password: 'password'
     )
 
     visit '/'
@@ -50,7 +50,6 @@ describe 'User' do
     fill_in 'E-mail address', with: user.email
     fill_in 'Password', with: user.password
     click_button 'Log in'
-
     click_on 'Log out'
 
     expect(page).to have_content('You have logged out')
