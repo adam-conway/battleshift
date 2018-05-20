@@ -5,31 +5,26 @@ describe "Api::V1::Shots" do
     let(:player_1_board)   { create(:board) }
     let(:player_2_board)   { create(:board) }
     let(:sm_ship) { create(:small_ship) }
+    let(:challenger) { create(:user) }
+    let(:opponent) { create(:user, api_key: '987654321a') }
     let(:game)    {
       create(:game,
         player_1_board: player_1_board,
-        player_2_board: player_2_board
+        player_2_board: player_2_board,
+        player_1: challenger,
+        player_2: opponent
       )
     }
 
-    let (:challenger) { create(:user) }
-    let (:opponent) { create(:user, api_key: '987654321a') }
 
-    xit "updates the message and board with a hit" do
-      allow_any_instance_of(AiSpaceSelector).to receive(:fire!).and_return("Miss")
-
+    it "updates the message and board with a hit" do
+      game = create(:game, player_1_board: player_1_board, player_2_board: player_2_board, player_1: challenger, player_2: opponent)
       create(:space, board: player_1_board, name: 'A1')
       create(:space, board: player_1_board, name: 'A2')
       create(:space, board: player_2_board, name: 'A1')
       create(:space, board: player_2_board, name: 'A2')
 
-      ShipPlacer.new(
-        game: game,
-        ship: sm_ship,
-        start_space: 'A1',
-        end_space: 'A2',
-        api_key: opponent.api_key
-      ).run
+      game.player_2_board.spaces.find_by(name: "A1").update(ship: create(:ship))
 
       headers = { "CONTENT_TYPE" => "application/json", 'X-API-Key' => challenger.api_key }
       json_payload = {target: "A1"}.to_json
@@ -40,19 +35,24 @@ describe "Api::V1::Shots" do
 
       game = JSON.parse(response.body, symbolize_names: true)
 
-      expected_messages = "Your shot resulted in a Hit. The computer's shot resulted in a Miss."
+      expected_messages = "Your shot resulted in a Hit."
       player_2_targeted_space = game[:player_2_board][:rows].first[:data].first[:status]
-
 
       expect(game[:message]).to eq expected_messages
       expect(player_2_targeted_space).to eq("Hit")
     end
 
-    xit "updates the message and board with a miss" do
-      allow_any_instance_of(AiSpaceSelector).to receive(:fire!).and_return("Miss")
+    it "updates the message and board with a miss" do
+      game = create(:game, player_1_board: player_1_board, player_2_board: player_2_board, player_1: challenger, player_2: opponent)
+      create(:space, board: player_1_board, name: 'A1')
+      create(:space, board: player_1_board, name: 'A2')
+      create(:space, board: player_2_board, name: 'A1')
+      create(:space, board: player_2_board, name: 'A2')
 
-      headers = { "CONTENT_TYPE" => "application/json", 'X-API-Key' => opponent.api_key }
-      json_payload = {target: "A1"}.to_json
+      game.player_2_board.spaces.find_by(name: "A1").update(ship: create(:ship))
+
+      headers = { "CONTENT_TYPE" => "application/json", 'X-API-Key' => challenger.api_key }
+      json_payload = {target: "A2"}.to_json
 
       post "/api/v1/games/#{game.id}/shots", params: json_payload, headers: headers
 
@@ -60,9 +60,8 @@ describe "Api::V1::Shots" do
 
       game = JSON.parse(response.body, symbolize_names: true)
 
-      expected_messages = "Your shot resulted in a Miss. The computer's shot resulted in a Miss."
-      player_2_targeted_space = game[:player_2_board][:rows].first[:data].first[:status]
-
+      expected_messages = "Your shot resulted in a Miss."
+      player_2_targeted_space = game[:player_2_board][:rows].first[:data].last[:status]
 
       expect(game[:message]).to eq expected_messages
       expect(player_2_targeted_space).to eq("Miss")
@@ -86,5 +85,21 @@ describe "Api::V1::Shots" do
       expect(game[:message]).to eq "Invalid coordinates."
     end
 
+    it "responds with incorrect api key" do
+      game = create(:game, player_1_board: player_1_board, player_2_board: player_2_board, player_1: challenger, player_2: opponent)
+      create(:space, board: player_1_board, name: 'A1')
+      create(:space, board: player_1_board, name: 'A2')
+      create(:space, board: player_2_board, name: 'A1')
+      create(:space, board: player_2_board, name: 'A2')
+
+      game.player_2_board.spaces.find_by(name: "A1").update(ship: create(:ship))
+
+      headers = { "CONTENT_TYPE" => "application/json", 'X-API-Key' => '123' }
+      json_payload = {target: "A1"}.to_json
+
+      post "/api/v1/games/#{game.id}/shots", params: json_payload, headers: headers
+
+      expect(response.status).to eq(401)
+    end
   end
 end
