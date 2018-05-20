@@ -12,6 +12,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'active_model_serializers', '0.10'
 gem 'pry'
+gem 'faraday'
 gem 'figaro'
 gem 'bcrypt'
 
