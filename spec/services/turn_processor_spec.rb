@@ -91,38 +91,4 @@ describe "testing turn_processor" do
 
     expect(turn_processor.message).to eq("Invalid move. Game over.")
   end
-  #
-  # it "Shoots and hits" do
-  #   ship = create(:ship, length: 3)
-  #   space_array = []
-  #   space_array << @player_1_board.spaces.find_by(name: "A1")
-  #   space_array << @player_1_board.spaces.find_by(name: "B1")
-  #   space_array << @player_1_board.spaces.find_by(name: "C1")
-  #   space_array.each do |space|
-  #     space.ship = ship
-  #     space.save
-  #   end
-  #
-  #   shot = Shooter.new(board: @player_1_board, target: "A1")
-  #   shot.fire!
-  #
-  #   expect(shot.message).to eq("Hit")
-  # end
-  #
-  # it "Shoots, hits, and sinks a ship" do
-  #   ship = create(:ship, length: 3, damage: 2)
-  #   space_array = []
-  #   space_array << @player_1_board.spaces.find_by(name: "A1")
-  #   space_array << @player_1_board.spaces.find_by(name: "B1")
-  #   space_array << @player_1_board.spaces.find_by(name: "C1")
-  #   space_array.each do |space|
-  #     space.ship = ship
-  #     space.save
-  #   end
-  #
-  #   shot = Shooter.new(board: @player_1_board, target: "A1")
-  #   shot.fire!
-  #
-  #   expect(shot.message).to eq("Hit. Battleship sunk")
-  # end
 end
