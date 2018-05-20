@@ -78,12 +78,6 @@ class TurnProcessor
     (game.current_turn == "challenger" && shooter.api_key == game.player_2.api_key) || (game.current_turn == "opponent" && shooter.api_key == game.player_1.api_key)
   end
 
-  def ai_attack_back
-    result = AiSpaceSelector.new(player.board).fire!
-    @messages << "The computer's shot resulted in a #{result}."
-    game.player_2_turns += 1
-  end
-
   def determine_target_board
     if game.current_turn == 'challenger'
       game.player_2_board

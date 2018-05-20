@@ -18,9 +18,11 @@ describe 'Api::V1::GamesController' do
 
       expect(response).to be_success
     end
-
-  it 'creates a new game successfully' do
-    response = create_game
-    expect(response.body[:id])
+    
+    it 'creates a new game successfully' do
+      response = create_game
+      expect(response.body[:id])
+    end
   end
+
 end
