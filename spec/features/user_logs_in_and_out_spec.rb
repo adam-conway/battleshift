@@ -43,13 +43,10 @@ describe 'User' do
       password: 'password'
     )
 
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+    
     visit '/'
 
-    click_link 'Log in'
-
-    fill_in 'E-mail address', with: user.email
-    fill_in 'Password', with: user.password
-    click_button 'Log in'
     click_on 'Log out'
 
     expect(page).to have_content('You have logged out')
