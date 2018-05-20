@@ -34,7 +34,7 @@ class TurnProcessor
     if check_for_cheater
       @messages << "Invalid move. It's your opponent's turn"
     elsif check_for_invalid_coordinates
-      @messages << "Invalid coordinates"
+      @messages << "Invalid coordinates."
     elsif check_for_game_over
       @messages << "Invalid move. Game over."
     else
