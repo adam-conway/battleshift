@@ -18,6 +18,18 @@ describe "testing turn_processor" do
     end
   end
 
+  it "Valid api key" do
+    turn_processor = TurnProcessor.new(@game, "D1", @player_1)
+
+    expect(turn_processor.check_api_key).to eq(false)
+  end
+
+  it "Valid attack" do
+    turn_processor = TurnProcessor.new(@game, "D1", @player_1)
+
+    expect(turn_processor.check_invalid_turn).to eq(false)
+  end
+
   it "Shoots but misses" do
     turn_processor = TurnProcessor.new(@game, "D1", @player_1)
     turn_processor.run!
@@ -26,10 +38,21 @@ describe "testing turn_processor" do
   end
 
   it "Shoots and hits" do
-    turn_processor = TurnProcessor.new(@game, "A1", @player_1)
+    @game.update(current_turn: "opponent")
+    @player_1_board.spaces.find_by(name: "A1").update(ship: create(:ship))
+    turn_processor = TurnProcessor.new(@game, "A1", @player_2)
     turn_processor.run!
 
     expect(turn_processor.message).to eq("Your shot resulted in a Hit.")
+  end
+
+  it "Shoots and hits to end the game" do
+    @game.update(current_turn: "opponent")
+    @player_1_board.spaces.find_by(name: "A1").update(ship: create(:ship, length: 1))
+    turn_processor = TurnProcessor.new(@game, "A1", @player_2)
+    turn_processor.run!
+
+    expect(turn_processor.message).to eq("Your shot resulted in a Hit. Battleship sunk. Game over.")
   end
 
   it "Unregistered guest tries to fire a shot" do
