@@ -6,7 +6,6 @@ class TurnProcessor
     @shooter      = shooter
     @target_board = determine_target_board
     @messages     = []
-    # binding.pry
   end
 
   def run!
