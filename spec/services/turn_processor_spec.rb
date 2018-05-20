@@ -81,7 +81,7 @@ describe "testing turn_processor" do
     turn_processor = TurnProcessor.new(@game, "Z1", @player_1)
     turn_processor.check_invalid_turn
 
-    expect(turn_processor.message).to eq("Invalid coordinates")
+    expect(turn_processor.message).to eq("Invalid coordinates.")
   end
 
   it "User tries to shoot after game is over" do
