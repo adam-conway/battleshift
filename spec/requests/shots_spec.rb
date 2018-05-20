@@ -4,7 +4,7 @@ describe "Api::V1::Shots" do
   context "POST /api/v1/games/:id/shots" do
     let(:player_1_board)   { create(:board) }
     let(:player_2_board)   { create(:board) }
-    let(:sm_ship) { Ship.new(2) }
+    let(:sm_ship) { create(:small_ship) }
     let(:game)    {
       create(:game,
         player_1_board: player_1_board,
@@ -12,12 +12,23 @@ describe "Api::V1::Shots" do
       )
     }
 
+    let (:challenger) { create(:user) }
+    let (:opponent) { create(:user) }
+
     it "updates the message and board with a hit" do
       allow_any_instance_of(AiSpaceSelector).to receive(:fire!).and_return("Miss")
-      ShipPlacer.new(board: player_2_board,
-                     ship: sm_ship,
-                     start_space: "A1",
-                     end_space: "A2").run
+      # ShipPlacer.new(board: player_2_board,
+      #                ship: sm_ship,
+      #                start_space: "A1",
+      #                end_space: "A2").run
+
+      ShipPlacer.new(
+        game: game,
+        ship: sm_ship,
+        start_space: 'A1',
+        end_space: 'A2',
+        api_key: opponent.api_key
+      ).run
 
       headers = { "CONTENT_TYPE" => "application/json" }
       json_payload = {target: "A1"}.to_json
