@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../support/http_helpers.rb'
+require './spec/support/http_helpers.rb'
 
 
 describe 'Api::V1::GamesController' do
@@ -18,7 +18,7 @@ describe 'Api::V1::GamesController' do
 
       expect(response).to be_success
     end
-    
+
     it 'creates a new game successfully' do
       response = create_game
       expect(response.body[:id])
