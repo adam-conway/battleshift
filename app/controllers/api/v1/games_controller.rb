@@ -17,10 +17,10 @@ module Api
         opponent_board = BoardGenerator.new(4).generate
 
         game = Game.create(
-          player_1: challenger,
-          player_1_board: challenger_board,
-          player_2: opponent,
-          player_2_board: opponent_board
+          player_1: challenger.id,
+          player_1_board: challenger_board.id,
+          player_2: opponent.id,
+          player_2_board: opponent_board.id
         )
 
         render json: game
