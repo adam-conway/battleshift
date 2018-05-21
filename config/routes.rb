@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
+  resources :games, only: [:index]
   resources :users, only: [:create]
   get '/register', to: 'users#new'
   get '/dashboard', to: 'dashboard#index'
