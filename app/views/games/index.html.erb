@@ -1,0 +1,31 @@
+<% if current_user %>
+  <% if @player_1_games.empty? && @player_2_games.empty? %>
+    <p>You don't have any games yet!</p>
+  <% else %>
+
+    <% @player_1_games.each do |game| %>
+      <p><%= "Game against #{game.player_2.name} (#{game.player_2.email}): " %>
+        <% if game.winner %>
+          <%= "This game is over" %>
+        <% elsif game.current_turn == 'challenger' %>
+          Your Turn
+        <% else %>
+          <%= "#{game.player_2.name}'s Turn" %>
+        <% end %>
+      </p>
+    <% end %>
+
+    <% @player_2_games.each do |game| %>
+      <p><%= "Game against #{game.player_1.name} (#{game.player_1.email}): " %>
+        <% if game.winner %>
+          <%= "This game is over" %>
+        <% elsif game.current_turn == 'opponent' %>
+          Your Turn
+        <% else %>
+          <%= "#{game.player_1.name}'s Turn" %>
+        <% end %>
+      </p>
+    <% end %>
+
+  <% end %>
+<% end %>
