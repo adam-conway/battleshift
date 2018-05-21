@@ -27,7 +27,6 @@ describe 'Activated User' do
       visit dashboard_path
 
       click_on 'Games'
-save_and_open_page
       expect(page).to have_content('Game against Adam (adam.n.conway@gmail.com): Your Turn')
       expect(page).to have_content("Game against Sasha (sasha@gmail.com): Sasha's Turn")
     end
